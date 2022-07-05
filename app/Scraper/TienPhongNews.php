@@ -12,7 +12,7 @@ use App\Models\Link;
 
 class TienPhongNews
 {
-    public function scrape()
+    public function scrape($url)
     {
         $client = new Client();
 
@@ -52,7 +52,6 @@ class TienPhongNews
                 ]);
             }
         });
-        echo "Đã tải hết danh mục";
     }
     public function getLinkByCategory($id)
     {
@@ -72,9 +71,9 @@ class TienPhongNews
             $GLOBALS['idCategory']=$id;
             $crawler->filter('a.cms-link')->each(function ($node) {
                 $link=$node->attr('href');
-                $listLink = DB::table('link')->where('link', $link)->count();
+                $listLink = Link::where('link', $link)->count();
                 if ($listLink === 0) {
-                    DB::table('link')->insert([
+                    Link::insert([
                             'link' => $link,
                             'idCategory' => $GLOBALS['idCategory']
                         ]);
@@ -85,7 +84,7 @@ class TienPhongNews
                 sleep(3);
             } else {
                 $page = false;
-                DB::table('category')->where('id', $GLOBALS['idCategory'])->update([
+                Category::where('id', $GLOBALS['idCategory'])->update([
                         'statusCrawl' => 1
                     ]);
             }

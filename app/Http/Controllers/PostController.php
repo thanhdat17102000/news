@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Category;
+
+use App\Models\Link;
+
 class PostController extends Controller
 {
     /**
@@ -13,86 +17,17 @@ class PostController extends Controller
      */
     public function index()
     {
-
+        $dataCategory = Category::select('id','title')->orderBy('id', 'ASC')->get();
+        return view("admin.post")->with('action','post')->with('dataCategory',$dataCategory);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
     public function crawl()
     {
+        $url ="";
         $bot = new \App\Scraper\TienPhongNews();
-        $bot->scrape();
+        $bot->scrape($url);
     }
-    public function crawl_index(){
-        $bot = new \App\Scraper\TienPhongNews();
-        $bot->getIdCategory();
-        return view('admin.category');
-    }
-    public function crawl_linkByCategory(){
-        $bot = new \App\Scraper\TienPhongNews();
-        $bot->getLinkByCategory();
+    public function post_crawl(Request $request){
+        dd($request->idCategory);
     }
 }

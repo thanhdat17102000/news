@@ -29,13 +29,13 @@ return new class extends Migration
             $table->increments('id');
             $table->string('title',255);
             $table->boolean('statusCrawl')->default(0);
+            $table->timestamps();
         });
         Schema::create('link', function (Blueprint $table) {
             $table->increments('id');
             $table->text('link');
             $table->boolean('statusCrawl')->default(0);
             $table->integer('idCategory');
-            $table->foreign('idCategory')->references('id')->on('category');
         });
     }
 

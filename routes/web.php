@@ -20,7 +20,8 @@ Route::get('/', function () {
     return redirect('category');
 });
 //Post
-Route::resource('post', PostController::class);
+Route::get('post', [PostController::class,'index']);
+Route::post('post_crawl', [PostController::class,'post_crawl']);
 
 //Category
 Route::resource('category', CategoryController::class);
