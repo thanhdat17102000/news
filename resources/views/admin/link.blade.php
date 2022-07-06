@@ -20,6 +20,7 @@
             <th>Link</th>
             <th>Danh mục</th>
             <th>Trạng thái crawl</th>
+            <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +31,13 @@
             <td>{{$item->link}}</td>
             <td>{{$item->title}}</td>
             <td>{{$item->statusCrawl===0 ? "Chưa crawl" : "Đã crawl"}}</td>
+            <td>
+                @if($item->statusCrawl===0)
+                <a href="post_crawl/{{$item->id}}" class="btn btn-primary">Crawl</a>
+                @else
+                <button type="button" class="btn btn-danger" disabled>Crawled</button>
+                @endif
+            </td>
         </tr>
         @endforeach
     </tbody>

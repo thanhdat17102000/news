@@ -22,6 +22,9 @@ Route::get('/', function () {
 //Post
 Route::get('post', [PostController::class,'index']);
 Route::post('post_crawl', [PostController::class,'post_crawl']);
+Route::get('post_crawl/{id}', [PostController::class,'post_crawlById']);
+Route::get('post_detail/{id}', [PostController::class,'post_detail']);
+
 
 //Category
 Route::resource('category', CategoryController::class);

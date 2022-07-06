@@ -12,8 +12,19 @@ use App\Models\Link;
 
 class TienPhongNews
 {
-    public function scrape($url)
+    public function scrape($id)
     {
+        // check link crawled
+        $check = Link::where("id",$id)->select('statusCrawl')->first()->statusCrawl;
+        if($check===1){
+            return redirect('post');
+        }
+        //
+        $url = Link::where("id",$id)->select('link')->first()->link;
+
+        $idCategory = Link::where("id",$id)->select('idCategory')->first()->idCategory;
+
+
         $client = new Client();
 
         $crawler = $client->request('GET', $url);
@@ -26,13 +37,40 @@ class TienPhongNews
         $created_at = date('Y-m-d H:i:s', strtotime($created_at));
 
 
+        $crawler->filter('.article__body.cms-body img.cms-photo')->each(function (Crawler $crawler) {
+            foreach ($crawler as $node) {
+                $src = $crawler->attr('data-src');
+                if ($src){
+                    $fileContent = \file_get_contents($src);
+                    if ($fileContent){
+                        $fileBase = \basename($src);
+                        $filePath = public_path().'/upload/'.$fileBase;
+                        \file_put_contents($filePath, $fileContent);
+                        $node->setAttribute('src', "/upload/".$fileBase);
+                        $node->setAttribute('data-src', "");
+                    }
+                }
+            }
+        });
+
+        $crawler->filter('.article__body.cms-body .cms-relate')->each(function (Crawler $crawler) {
+            foreach ($crawler as $node) {
+                $node->parentNode->removeChild($node);
+            }
+        });
         $content = $crawler->filter('.article__body.cms-body ')->html();
+
+
         Post::insert([
             'title' => $title,
             'short_description' => $short_description,
             'content' => $content,
             'created_at' => $created_at,
-            'updated_at' => $created_at
+            'updated_at' => $created_at,
+            'idCategory' => $idCategory
+        ]);
+        Link::where('id',$id)->update([
+            'statusCrawl' => 1
         ]);
     }
     public function getCategory()
