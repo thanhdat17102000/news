@@ -33,7 +33,8 @@
                 Thời gian cập nhật : {{date_format($item->updated_at,"d/m/Y H:i:s")}}
             </td>
             <td>
-                <button>Add</button>
+                <a href="" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
+                <a href="" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
             </td>
         </tr>
         @endforeach
