@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use \Illuminate\Contracts\Auth\Authenticatable;
 
 class CheckAdmin
 {
@@ -16,6 +18,20 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+
+        if (Auth::check())
+        {
+            $user=Auth::user();
+            if (($user->role==="admin"))
+            {
+                return $next($request);
+            }
+            else{
+                return redirect('login')->with('thongbao', 'Bạn không phải là ADMIN');;
+            }
+        }else{
+            return redirect('login');
+        }
+
     }
 }

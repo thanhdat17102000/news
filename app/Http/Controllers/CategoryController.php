@@ -23,6 +23,6 @@ class CategoryController extends Controller
     {
         $bot = new \App\Scraper\TienPhongNews();
         $bot->getCategory();
-        return redirect('category');
+        return redirect('admin/category');
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::dropIfExists('link');
         Schema::dropIfExists('post');
         Schema::dropIfExists('category');
+        Schema::dropIfExists('user');
 
         Schema::create('post', function (Blueprint $table) {
             $table->increments('id');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->text('short_description');
             $table->text('content');
             $table->integer('idCategory');
+            $table->enum('status',['publish','unpublish']);
             $table->timestamps();
         });
         Schema::create('category', function (Blueprint $table) {
@@ -37,6 +39,14 @@ return new class extends Migration
             $table->text('link');
             $table->boolean('statusCrawl')->default(0);
             $table->integer('idCategory');
+            $table->timestamps();
+        });
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name',255)->nullable();
+            $table->string('email',255)->unique()->nullable();
+            $table->string('password',255)->nullable();
+            $table->enum('role',['admin','user']);
             $table->timestamps();
         });
     }

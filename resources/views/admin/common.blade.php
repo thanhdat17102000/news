@@ -1,3 +1,6 @@
+<?php
+use Illuminate\Support\Facades\Auth;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +25,14 @@
 </head>
 
 <body>
-    <div class="h3 text-center">Quản lý bài viết</div>
+<div class="clearfix mt-3 mb-3">
+  <div class="h3 text-center float-left ml-5">Quản lý bài viết</div>
+  <div class="float-right mr-5">
+    <span>Xin chào, {{Auth::user()->name}}</span>
+    <a href="{{route('logout')}}" class="btn btn-danger ml-3 h5 ">Đăng xuất</a>
+  </div>
+</div>
+
     <div class="row ml-2 mr-2">
         <div class="col-2 ">
             <ul class="list-group">

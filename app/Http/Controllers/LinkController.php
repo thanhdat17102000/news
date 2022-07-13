@@ -20,6 +20,6 @@ class LinkController extends Controller
     public function link_crawl(Request $request){
         $bot = new \App\Scraper\TienPhongNews();
         $bot->getLinkByCategory($request->idCategory);
-        return redirect('link');
+        return redirect('admin/link');
     }
 }
